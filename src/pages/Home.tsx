@@ -158,33 +158,33 @@ function Home() {
             muted
             playsInline
             className="absolute w-full h-full object-cover"
-            style={{ filter: 'brightness(0.6)' }}
+            style={{ filter: 'brightness(0.8)' }}
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0 bg-black/10"></div>
         </div>
 
         <div className="relative container mx-auto px-4 py-32">
-          <div className="max-w-4xl">
+          <div className="ml-auto max-w-2xl">
             <div className="mb-8 inline-block">
-              <div className="px-4 py-2 rounded-full bg-purple-50/90 backdrop-blur-sm border border-purple-100 text-purple-600 text-sm font-medium">
+              <div className="px-4 py-2 rounded-full bg-purple-50/70 backdrop-blur-sm border border-purple-100/50 text-purple-600 text-sm font-medium">
                 Powered by Advanced AI
               </div>
             </div>
-            <h1 className="text-7xl font-bold text-white mb-6 relative">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-purple-100">
+            <h1 className="text-7xl font-bold mb-6 relative">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200 drop-shadow-lg">
                 Neural Network Trading Intelligence
               </span>
             </h1>
-            <p className="text-xl text-gray-200 mb-8 max-w-2xl">
+            <p className="text-xl text-white/90 mb-8 max-w-xl backdrop-blur-sm bg-black/10 p-4 rounded-lg">
               Harness the power of our advanced neural networks for real-time market analysis, predictive modeling, and automated portfolio optimization.
             </p>
             <div className="flex gap-4">
               <Link 
                 to="/docs" 
-                className="group relative px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all overflow-hidden backdrop-blur-sm bg-opacity-90"
+                className="group relative px-8 py-4 bg-purple-600/90 hover:bg-purple-700 text-white rounded-lg transition-all overflow-hidden backdrop-blur-sm"
               >
                 <span className="relative flex items-center gap-2 font-semibold">
                   Get Started <ArrowUpRight className="w-5 h-5" />
@@ -192,7 +192,7 @@ function Home() {
               </Link>
               <a 
                 href="mailto:contact@primetrader.ai"
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/30 rounded-lg font-semibold text-white transition-all flex items-center gap-2"
+                className="px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-lg font-semibold text-white transition-all flex items-center gap-2"
               >
                 Contact Sales
               </a>
