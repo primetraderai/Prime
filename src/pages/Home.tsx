@@ -135,64 +135,69 @@ const plans = [
 
 function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playCount, setPlayCount] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playTimeoutRef = useRef<number>();
   const scrollTimeoutRef = useRef<number>();
 
+  const stopVideoAfterDelay = () => {
+    const video = videoRef.current;
+    if (video) {
+      // Clear any existing timeout
+      if (playTimeoutRef.current) {
+        window.clearTimeout(playTimeoutRef.current);
+      }
+      
+      // Set new timeout to stop video after 3 seconds
+      playTimeoutRef.current = window.setTimeout(() => {
+        video.pause();
+        setIsPlaying(false);
+      }, 3000); // Changed to 3 seconds
+    }
+  };
+
   useEffect(() => {
-    // Initial two plays when the component mounts
+    // Initial play when component mounts
     const video = videoRef.current;
     if (video) {
       video.play();
-      
-      const handleVideoEnd = () => {
-        setPlayCount(prev => {
-          if (prev < 2) {
-            video.play();
-            return prev + 1;
-          }
-          return prev;
-        });
-      };
-
-      video.addEventListener('ended', handleVideoEnd);
-      return () => video.removeEventListener('ended', handleVideoEnd);
+      setIsPlaying(true);
+      stopVideoAfterDelay();
     }
+
+    // Cleanup
+    return () => {
+      if (playTimeoutRef.current) {
+        window.clearTimeout(playTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolling(true);
       const video = videoRef.current;
-      
-      if (video && video.paused) {
-        setPlayCount(0); // Reset play count when scrolling starts
-        video.play();
-      }
+      if (!video) return;
 
-      // Clear existing timeout
+      // Clear any existing scroll timeout
       if (scrollTimeoutRef.current) {
         window.clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Set new timeout
+      // Start playing if not already playing
+      if (!isPlaying) {
+        video.play();
+        setIsPlaying(true);
+      }
+
+      // Reset the play timeout
+      if (playTimeoutRef.current) {
+        window.clearTimeout(playTimeoutRef.current);
+      }
+
+      // Set new scroll timeout
       scrollTimeoutRef.current = window.setTimeout(() => {
-        setIsScrolling(false);
-        if (video && !video.paused) {
-          const checkPlayCount = () => {
-            if (playCount >= 2) {
-              video.pause();
-            }
-          };
-          
-          // Check if we should stop after current play ends
-          if (playCount >= 2) {
-            video.pause();
-          } else {
-            video.addEventListener('ended', checkPlayCount, { once: true });
-          }
-        }
-      }, 150); // Adjust this value to change how quickly the video stops after scrolling
+        // When scrolling stops, start the 2-second countdown to pause
+        stopVideoAfterDelay();
+      }, 150); // Adjust this value to change how quickly it reacts to scroll stopping
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -201,8 +206,11 @@ function Home() {
       if (scrollTimeoutRef.current) {
         window.clearTimeout(scrollTimeoutRef.current);
       }
+      if (playTimeoutRef.current) {
+        window.clearTimeout(playTimeoutRef.current);
+      }
     };
-  }, [playCount]);
+  }, [isPlaying]);
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
@@ -226,6 +234,7 @@ function Home() {
             ref={videoRef}
             muted
             playsInline
+            loop
             className="absolute w-full h-full object-cover"
             style={{ filter: 'brightness(0.9)' }}
           >
