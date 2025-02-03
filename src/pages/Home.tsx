@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   LineChart,
@@ -134,6 +134,76 @@ const plans = [
 ];
 
 function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playCount, setPlayCount] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef<number>();
+
+  useEffect(() => {
+    // Initial two plays when the component mounts
+    const video = videoRef.current;
+    if (video) {
+      video.play();
+      
+      const handleVideoEnd = () => {
+        setPlayCount(prev => {
+          if (prev < 2) {
+            video.play();
+            return prev + 1;
+          }
+          return prev;
+        });
+      };
+
+      video.addEventListener('ended', handleVideoEnd);
+      return () => video.removeEventListener('ended', handleVideoEnd);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      const video = videoRef.current;
+      
+      if (video && video.paused) {
+        setPlayCount(0); // Reset play count when scrolling starts
+        video.play();
+      }
+
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+
+      // Set new timeout
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        setIsScrolling(false);
+        if (video && !video.paused) {
+          const checkPlayCount = () => {
+            if (playCount >= 2) {
+              video.pause();
+            }
+          };
+          
+          // Check if we should stop after current play ends
+          if (playCount >= 2) {
+            video.pause();
+          } else {
+            video.addEventListener('ended', checkPlayCount, { once: true });
+          }
+        }
+      }, 150); // Adjust this value to change how quickly the video stops after scrolling
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [playCount]);
+
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* AI Grid Background */}
@@ -153,8 +223,7 @@ function Home() {
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <video
-            autoPlay
-            loop
+            ref={videoRef}
             muted
             playsInline
             className="absolute w-full h-full object-cover"
