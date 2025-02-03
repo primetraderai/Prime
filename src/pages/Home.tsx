@@ -149,7 +149,7 @@ function Home() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen flex items-center justify-center">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <video
@@ -158,33 +158,33 @@ function Home() {
             muted
             playsInline
             className="absolute w-full h-full object-cover"
-            style={{ filter: 'brightness(0.8)' }}
+            style={{ filter: 'brightness(0.9)' }}
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="absolute inset-0 bg-white/40"></div>
         </div>
 
-        <div className="relative container mx-auto px-4 py-32">
-          <div className="ml-auto max-w-2xl">
-            <div className="mb-8 inline-block">
-              <div className="px-4 py-2 rounded-full bg-purple-50/70 backdrop-blur-sm border border-purple-100/50 text-purple-600 text-sm font-medium">
+        <div className="relative container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="mb-8 flex justify-center">
+              <div className="px-4 py-2 rounded-full bg-purple-100 backdrop-blur-sm border border-purple-200 text-purple-800 text-sm font-medium">
                 Powered by Advanced AI
               </div>
             </div>
             <h1 className="text-7xl font-bold mb-6 relative">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200 drop-shadow-lg">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-indigo-800 drop-shadow-lg">
                 Neural Network Trading Intelligence
               </span>
             </h1>
-            <p className="text-xl text-white/90 mb-8 max-w-xl backdrop-blur-sm bg-black/10 p-4 rounded-lg">
+            <p className="text-xl text-gray-800 mb-8 backdrop-blur-sm bg-white/60 p-6 rounded-lg mx-auto shadow-lg">
               Harness the power of our advanced neural networks for real-time market analysis, predictive modeling, and automated portfolio optimization.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center">
               <Link 
                 to="/docs" 
-                className="group relative px-8 py-4 bg-purple-600/90 hover:bg-purple-700 text-white rounded-lg transition-all overflow-hidden backdrop-blur-sm"
+                className="group relative px-8 py-4 bg-purple-800 hover:bg-purple-900 text-white rounded-lg transition-all overflow-hidden shadow-lg"
               >
                 <span className="relative flex items-center gap-2 font-semibold">
                   Get Started <ArrowUpRight className="w-5 h-5" />
@@ -192,7 +192,7 @@ function Home() {
               </Link>
               <a 
                 href="mailto:contact@primetrader.ai"
-                className="px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-lg font-semibold text-white transition-all flex items-center gap-2"
+                className="px-8 py-4 bg-gray-900/80 hover:bg-gray-900/90 backdrop-blur-sm border border-gray-800 rounded-lg font-semibold text-white transition-all flex items-center gap-2 shadow-lg"
               >
                 Contact Sales
               </a>
